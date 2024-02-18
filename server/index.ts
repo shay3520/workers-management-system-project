@@ -1,19 +1,31 @@
 import express from 'express'
+import type { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import connectDB from './connectDB'
+import userRoutes from './routes/userRoutes'
+import cors from 'cors'
 
 dotenv.config()
-connectDB().then(() => {
-  console.log('Database connection successful')
-}).catch((error) => {
-  console.error('Database connection error:', error)
-  process.exit(1)
+
+connectDB()
+  .then(() => {
+    console.log('Database connection successful')
+  })
+  .catch((error: Error) => {
+    console.error('Database connection error:', error.message)
+    process.exit(1)
+  })
+
+const app: Express = express()
+const port = process.env.PORT
+app.use(cors())
+app.use(express.json())
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello from the server!')
 })
 
-const app = express()
-const port = process.env.PORT
-
-app.get('/', (req, res) => res.send('Hello'))
+app.use('/api/users', userRoutes)
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)

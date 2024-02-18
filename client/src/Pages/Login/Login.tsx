@@ -1,12 +1,45 @@
-import React from 'react';
-import { Button, TextField, Box, Typography, Container } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, TextField, Box, Typography } from '@mui/material';
+import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 export const Login = () => {
-  return (
-    <Container component="main" maxWidth="xs">
+  
+    const [values, setValues] = useState({
+    email: '',
+    password: ''
+  })
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+        event.preventDefault()
+        console.log('Form submitted', values)
+        axios.post('http://localhost:8080/api/users/login', values)
+        .then(result => console.log(result))
+        .catch(err => console.log(err))
+    }
+
+
+    return (
+    <Box
+      sx={{
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundImage: 'url(../../assets/employeems.jpeg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }}
+    >
       <Box
         sx={{
-          marginTop: 8,
+          width: 400, 
+          backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          padding: '20px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -15,7 +48,7 @@ export const Login = () => {
         <Typography component="h1" variant="h5">
           Login Page
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1, width: '100%' }} onSubmit={handleSubmit}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -26,6 +59,8 @@ export const Login = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            value={values.email}
+            onChange={(e) => setValues({...values, email: e.target.value})}
           />
           <TextField
             variant="outlined"
@@ -37,6 +72,8 @@ export const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={values.password}
+            onChange={(e) => setValues({...values, password: e.target.value})}
           />
           <Button
             type="submit"
@@ -47,7 +84,8 @@ export const Login = () => {
             Submit
           </Button>
         </Box>
+        <Link to="/register" style={{ marginTop: '20px' }}>Don't have an account yet? Register</Link>
       </Box>
-    </Container>
+    </Box>
   );
 };
