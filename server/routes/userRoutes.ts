@@ -51,7 +51,11 @@ router.post('/login', async (req: Request<unknown, unknown, LoginRequestBody>, r
     }
     const secret = process.env.JWT_SECRET ?? 'fallbackSecret'
     const token = jwt.sign({ userId: user._id, role: user.role }, secret, { expiresIn: '24h' })
-    res.json({ token })
+    res.json({
+      token,
+      email: user.email,
+      role: user.role
+    })
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).send(error.message)

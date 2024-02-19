@@ -1,54 +1,62 @@
 import React, { useState } from 'react';
-import { Button, TextField, Box, Typography } from '@mui/material';
-import axios from 'axios';
-import { Link } from 'react-router-dom'
+import { Button, TextField, Typography, Paper, Box } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { LoginFormValues } from './type'; // Ensure this type is defined
+import { loginUser } from '../../api/userApi';
+import { useTheme } from '@mui/material/styles';
+import { useUserContext } from '../../contexts/UserContext';
 
 export const Login = () => {
-  
-    const [values, setValues] = useState({
+  const { setUser } = useUserContext();
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const [values, setValues] = useState<LoginFormValues>({
     email: '',
     password: ''
-  })
-
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-        event.preventDefault()
-        console.log('Form submitted', values)
-        axios.post('http://localhost:8080/api/users/login', values)
-        .then(result => console.log(result))
-        .catch(err => console.log(err))
+  });
+  
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      const userInfo = await loginUser(values); 
+      console.log('Login successful');
+      setUser({ email: userInfo.email, role: userInfo.role });
+      console.log('Logged in user info:', { email: userInfo.email, role: userInfo.role });
+      navigate('/'); 
+    } catch (err) {
+      console.error('Login failed:', err);
     }
+  };
 
-
-    return (
+  return (
     <Box
       sx={{
         height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
+        width: '100vw',
         backgroundImage: 'url(../../assets/employeems.jpeg)',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      <Box
+      <Paper
+        elevation={3}
         sx={{
-          width: 400, 
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          p: 4,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          '& .MuiTextField-root': { mb: 2 },
+          '& .MuiButton-root': { mt: 1, mb: 2 },
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
           Login Page
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1, width: '100%' }} onSubmit={handleSubmit}>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: 400, maxWidth: '100%' }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -60,7 +68,7 @@ export const Login = () => {
             autoComplete="email"
             autoFocus
             value={values.email}
-            onChange={(e) => setValues({...values, email: e.target.value})}
+            onChange={(e) => setValues({ ...values, email: e.target.value })}
           />
           <TextField
             variant="outlined"
@@ -73,7 +81,7 @@ export const Login = () => {
             id="password"
             autoComplete="current-password"
             value={values.password}
-            onChange={(e) => setValues({...values, password: e.target.value})}
+            onChange={(e) => setValues({ ...values, password: e.target.value })}
           />
           <Button
             type="submit"
@@ -84,8 +92,10 @@ export const Login = () => {
             Submit
           </Button>
         </Box>
-        <Link to="/register" style={{ marginTop: '20px' }}>Don't have an account yet? Register</Link>
-      </Box>
+        <Link to="/register" style={{ textDecoration: 'none', color: theme.palette.primary.main }}>
+          Don't have an account yet? Register
+        </Link>
+      </Paper>
     </Box>
   );
 };

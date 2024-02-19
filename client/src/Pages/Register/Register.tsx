@@ -1,56 +1,59 @@
-import React, { useState } from 'react'
-import { Button, TextField, Box, Typography, MenuItem } from '@mui/material'
-import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-
+import React, { useState } from 'react';
+import { Button, TextField, Typography, MenuItem, Paper, Box } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { RegisterFormValues } from './type'; 
+import { registerUser } from '../../api/userApi';
+import { useTheme } from '@mui/material/styles';
 
 export const Register = () => {
-    const navigate = useNavigate(); 
-    const [values, setValues] = useState({
+  const theme = useTheme();
+  const navigate = useNavigate();
+  const [values, setValues] = useState<RegisterFormValues>({
     email: '',
     password: '',
-    role: '' 
-  })
+    role: '',
+  });
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
-    event.preventDefault()
-    console.log(values)
-    axios.post('http://localhost:8080/api/users/register', values)
-    .then(result => {
-        console.log(result)
-        navigate('/login');
-    })
-    .catch(err => {
-        console.error(err)
-    })
-}
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await registerUser(values);
+      console.log('Registration successful');
+      navigate('/login');
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
+  };
 
   return (
-    <Box sx={{
-      height: '100vh',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundImage: 'url(../../assets/employeems.jpeg)',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-    }}>
-      <Box sx={{
-        width: 400,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        padding: '20px',
-        borderRadius: '8px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    <Box
+      sx={{
+        height: '100vh',
+        width: '100vw',
+        backgroundImage: 'url(../../assets/employeems.jpeg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-      }}>
-        <Typography component="h1" variant="h5">
+        justifyContent: 'center',
+      }}
+    >
+      <Paper
+        elevation={3}
+        sx={{
+          p: 4,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          '& .MuiTextField-root': { mb: 2 },
+          '& .MuiButton-root': { mt: 1, mb: 2 },
+        }}
+      >
+        <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
           Registration Page
         </Typography>
-        <Box component="form" noValidate sx={{ mt: 1, width: '100%' }} onSubmit={handleSubmit}>
+        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ width: 400, maxWidth: '100%' }}>
           <TextField
             variant="outlined"
             margin="normal"
@@ -81,7 +84,7 @@ export const Register = () => {
             select
             label="Role"
             value={values.role}
-            onChange={(e) => setValues({ ...values, role: e.target.value })}
+            onChange={(e) => setValues({ ...values, role: e.target.value as RegisterFormValues['role'] })}
             fullWidth
             variant="outlined"
             margin="normal"
@@ -101,8 +104,10 @@ export const Register = () => {
             Register
           </Button>
         </Box>
-        <Link to="/login" style={{ marginTop: '20px', textDecoration: 'none', color: '#1976d2' }}>Already have an account? Login</Link>
-      </Box>
+        <Link to="/login" style={{ textDecoration: 'none', color: theme.palette.primary.main }}>
+          Already have an account? Login
+        </Link>
+      </Paper>
     </Box>
-  )
-}
+  );
+};
