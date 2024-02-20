@@ -22,7 +22,7 @@ export const Login = () => {
       console.log('Login successful');
       setUser({ email: userInfo.email, role: userInfo.role });
       console.log('Logged in user info:', { email: userInfo.email, role: userInfo.role });
-      navigate('/'); 
+      navigate('/admin'); 
     } catch (err) {
       console.error('Login failed:', err);
     }

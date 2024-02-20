@@ -89,7 +89,7 @@ export const Register = () => {
             variant="outlined"
             margin="normal"
           >
-            {['admin', 'viewer', 'employee'].map((role) => (
+            {['admin', 'viewer'].map((role) => (
               <MenuItem key={role} value={role}>
                 {role.charAt(0).toUpperCase() + role.slice(1)}
               </MenuItem>

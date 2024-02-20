@@ -1,6 +1,6 @@
 export interface RegisterFormValues {
     email: string;
     password: string;
-    role: 'admin' | 'viewer' | 'employee' | '';
+    role: 'admin' | 'viewer' | '';
   }
   

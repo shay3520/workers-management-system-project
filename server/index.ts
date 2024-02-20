@@ -3,6 +3,7 @@ import type { Express, Request, Response } from 'express'
 import dotenv from 'dotenv'
 import connectDB from './connectDB'
 import userRoutes from './routes/userRoutes'
+import employeeRoutes from './routes/employeeRoutes'
 import cors from 'cors'
 
 dotenv.config()
@@ -26,6 +27,7 @@ app.get('/', (req: Request, res: Response) => {
 })
 
 app.use('/api/users', userRoutes)
+app.use('/api/employees', employeeRoutes)
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)

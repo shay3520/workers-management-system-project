@@ -10,7 +10,7 @@ dotenv.config()
 interface RegisterRequestBody {
   email: string
   password: string
-  role: 'admin' | 'viewer' | 'employee'
+  role: 'admin' | 'viewer'
 }
 
 interface LoginRequestBody {
@@ -56,6 +56,19 @@ router.post('/login', async (req: Request<unknown, unknown, LoginRequestBody>, r
       email: user.email,
       role: user.role
     })
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).send(error.message)
+    } else {
+      res.status(500).send('An unknown error occurred')
+    }
+  }
+})
+
+router.get('/totalAdmins', async (req: Request, res: Response) => {
+  try {
+    const count = await User.countDocuments({ role: 'admin' })
+    res.json({ total: count })
   } catch (error) {
     if (error instanceof Error) {
       res.status(500).send(error.message)
