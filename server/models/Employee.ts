@@ -5,7 +5,7 @@ const employeeSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   salary: { type: Number, required: true },
   address: { type: String, required: true },
-  category: { type: String, required: true, enum: ['Development', 'IT', 'Designing', 'Management'] },
+  category: { type: String, required: false, enum: ['Development', 'IT', 'Designing', 'Management'] },
   image: { type: String, required: false }
 })
 

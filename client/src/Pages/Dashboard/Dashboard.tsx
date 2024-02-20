@@ -6,8 +6,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import EmployeesTable from './Shared/EmployeesTable/EmployeesTable';
 
-
-
 export const Dashboard = () => {
   const { data: totalAdmins, isLoading: isLoadingAdmins } = useFetchTotalAdmins();
   const { data: totalEmployees, isLoading: isLoadingEmployees } = useFetchTotalEmployees();
