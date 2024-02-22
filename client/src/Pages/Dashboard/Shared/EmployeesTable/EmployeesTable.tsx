@@ -18,26 +18,23 @@ const EmployeesTable = () => {
   if (isError) return <div>Error: {error?.message}</div>;
 
   return (
-    <TableContainer component={Paper} sx={{ maxWidth: '80%', mt: 4, mx: 'auto' }}>
+    <TableContainer component={Paper} sx={{ maxWidth: '100%', mt: 4, mx: 'auto' }}>
       <Table aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Name</TableCell>
-            <TableCell align="center" sx={{ width: '100%', fontWeight: 'bold', fontSize: '1.2rem' }}>Email</TableCell> 
-            <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: '1.2rem' }}>Salary</TableCell>
+            <TableCell sx={{ fontWeight: 'bold', fontSize: { xs: '0.8rem', sm: '1.2rem' }, padding: { xs: '6px', sm: '16px' } }}>Name</TableCell>
+            <TableCell align="center" sx={{ fontWeight: 'bold', fontSize: { xs: '0.8rem', sm: '1.2rem' }, padding: { xs: '6px', sm: '16px' } }}>Email</TableCell> 
+            <TableCell align="right" sx={{ fontWeight: 'bold', fontSize: { xs: '0.8rem', sm: '1.2rem' }, padding: { xs: '6px', sm: '16px' } }}>Salary</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {employees?.map((employee) => (
-            <TableRow
-              key={employee._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row" align="left">
+            <TableRow key={employee._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell component="th" scope="row" align="left" sx={{ fontSize: { xs: '0.8rem', sm: '1rem' }, padding: { xs: '6px', sm: '16px' } }}>
                 {employee.name}
               </TableCell>
-              <TableCell align="center" >{employee.email}</TableCell> 
-              <TableCell align="right">{employee.salary}</TableCell>
+              <TableCell align="center" sx={{ fontSize: { xs: '0.8rem', sm: '1rem' }, padding: { xs: '6px', sm: '16px' } }}>{employee.email}</TableCell> 
+              <TableCell align="right" sx={{ fontSize: { xs: '0.8rem', sm: '1rem' }, padding: { xs: '6px', sm: '16px' }}}>{employee.salary}</TableCell>
             </TableRow>
           ))}
         </TableBody>

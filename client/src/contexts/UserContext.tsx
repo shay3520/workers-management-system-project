@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
   email: string;
-  role: 'admin' | 'viewer' | 'employee'; // Adjust as needed
+  role: 'admin' | 'viewer' | 'employee'; 
 }
 
 interface UserContextType {

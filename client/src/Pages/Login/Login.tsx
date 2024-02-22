@@ -6,6 +6,7 @@ import { loginUser } from '../../api/userApi';
 import { useTheme } from '@mui/material/styles';
 import { useUserContext } from '../../contexts/UserContext';
 
+
 export const Login = () => {
   const { setUser } = useUserContext();
   const theme = useTheme();
@@ -22,7 +23,7 @@ export const Login = () => {
       console.log('Login successful');
       setUser({ email: userInfo.email, role: userInfo.role });
       console.log('Logged in user info:', { email: userInfo.email, role: userInfo.role });
-      navigate('/admin'); 
+      navigate('/dashboard'); 
     } catch (err) {
       console.error('Login failed:', err);
     }

@@ -8,7 +8,7 @@ import { DashboardCardProps } from './type';
 
 const DashboardCard: React.FC<DashboardCardProps> = ({ title, data }) => {
   return (
-    <Card sx={{ minWidth: 275, height: 250, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 2, boxShadow: 3, borderRadius: 2 }}>
+    <Card sx={{ minWidth: 275, height: { xs: 150, sm: 250 }, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 2, boxShadow: 3, borderRadius: 2 }}>
       <CardContent>
         <Typography sx={{ mb: 0, fontSize: 30, fontWeight: 'bold' }} color="text.secondary" gutterBottom>
           {title}
