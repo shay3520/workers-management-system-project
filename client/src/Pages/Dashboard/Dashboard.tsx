@@ -1,7 +1,8 @@
 import React from 'react'
 import SideNav from '../../components/SideNav/SideNav'
 import DashboardCard from './Shared/DashboardCard/DashboardCard'
-import { useFetchTotalAdmins, useFetchTotalEmployees, useFetchTotalSalary } from '../../api/dataFetchApi';
+import { useFetchTotalEmployees, useFetchTotalSalary } from '../../api/employeeApi';
+import { useFetchTotalAdmins } from '../../api/userApi';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import EmployeesTable from './Shared/EmployeesTable/EmployeesTable';

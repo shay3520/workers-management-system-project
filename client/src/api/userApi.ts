@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useQuery } from 'react-query';
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -19,4 +20,11 @@ export const loginUser = async (loginData: { email: string; password: string }) 
   } catch (error) {
     throw error;
   }
+};
+
+export const useFetchTotalAdmins = () => {
+  return useQuery('totalAdmins', async () => {
+    const { data } = await axios.get(`${BASE_URL}/users/totalAdmins`);
+    return data.total;
+  });
 };

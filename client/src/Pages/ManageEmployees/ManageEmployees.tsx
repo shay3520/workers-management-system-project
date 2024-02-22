@@ -6,7 +6,7 @@ export const ManageEmployees = () => {
   return (
     <>
       <SideNav />
-      <div style={{ marginLeft: '240px' }}> {/* Adjust this value if your sidebar width changes */}
+      <div style={{ marginLeft: '240px' }}> 
       <EmployeeControlTable />
     </div>
     </>

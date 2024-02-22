@@ -20,9 +20,7 @@ export const Login = () => {
     event.preventDefault();
     try {
       const userInfo = await loginUser(values); 
-      console.log('Login successful');
       setUser({ email: userInfo.email, role: userInfo.role });
-      console.log('Logged in user info:', { email: userInfo.email, role: userInfo.role });
       navigate('/dashboard'); 
     } catch (err) {
       console.error('Login failed:', err);

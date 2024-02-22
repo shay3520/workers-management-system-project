@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, Stack, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
-import axios from 'axios';
 import { FormData, AddEmployeeModalProps, Employee } from '../AddEmployeeModal/type';
 import { SelectChangeEvent } from '@mui/material/Select';
+import { updateEmployee } from '../../../../../../api/employeeApi';
 
-
-const style = {
+const BoxStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -57,14 +56,17 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ open, handleClose
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = `${process.env.REACT_APP_API_BASE_URL}/employees/updateEmployee/${employee?._id}`;
-
-    try {
-      await axios.put(url, formData);
-      handleClose();
-      refreshEmployees(); 
-    } catch (error) {
-      console.error("Failed to update employee:", error);
+  
+    if (employee?._id) {
+      try {
+        await updateEmployee(employee._id, formData);
+        handleClose();
+        refreshEmployees(); 
+      } catch (error) {
+        console.error("Failed to update employee:", error);
+      }
+    } else {
+      console.error("No employee ID provided, cannot update.");
     }
   };
 
@@ -75,7 +77,7 @@ const EditEmployeeModal: React.FC<EditEmployeeModalProps> = ({ open, handleClose
       aria-labelledby="edit-employee-modal-title"
       aria-describedby="edit-employee-modal-description"
     >
-      <Box sx={style} component="form" onSubmit={handleSubmit} noValidate>
+      <Box sx={BoxStyle} component="form" onSubmit={handleSubmit} noValidate>
         <Typography id="edit-employee-modal-title" variant="h6" component="h2" textAlign="center" mb={2}>
           Edit Employee
         </Typography>

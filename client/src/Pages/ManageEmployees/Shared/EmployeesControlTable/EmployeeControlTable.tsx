@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from 'react-query';
 import axios from 'axios';
-import {Modal, TextField, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton, Box } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, IconButton, Box } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Employee, FetchError } from './type';
 import AddEmployeeModal from './Shared/AddEmployeeModal/AddEmployeeModal';
 import EditEmployeeModal from './Shared/EditEmployeeModal/EditEmployeeModal';
+import { DeleteEmployee } from '../../../../api/employeeApi';
+import { Link } from 'react-router-dom';
+
 
 const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
@@ -20,33 +23,36 @@ const EmployeeControlTable = () => {
   const queryClient = useQueryClient(); 
   const { data: employees, isLoading, isError, error } = useQuery<Employee[], FetchError>('employeesControl', fetchEmployees);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
-  const refreshEmployees = () => queryClient.invalidateQueries('employeesControl');
-
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [currentEmployee, setCurrentEmployee] = useState<Employee | null>(null);
 
-  const handleOpenEditModal = (employee: Employee) => {
-    setCurrentEmployee(employee); 
-    setEditModalOpen(true);
-  };
-  
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   const handleCloseEditModal = () => {
     setEditModalOpen(false);
     setCurrentEmployee(null); 
   };
- 
-  const handleDeleteClick = async (employeeId: Employee["_id"]) => {
-    console.log("Deleting employee with ID:", employeeId);
+
+const handleDeleteClick = async (employeeId: Employee["_id"]) => {
+  if (employeeId) {
     try {
-      await axios.delete(`${BASE_URL}/employees/${employeeId}`);
-      queryClient.invalidateQueries('employeesControl'); 
+      await DeleteEmployee(employeeId);
     } catch (error) {
-      console.error("Failed to delete employee:", error);
+      console.error("Error in handleDeleteClick:", error);
     }
+  } else {
+    console.error("No employee ID provided, cannot delete.");
+  }
+};
+
+  
+  
+  const refreshEmployees = () => queryClient.invalidateQueries('employeesControl');
+  const handleOpenEditModal = (employee: Employee) => {
+    setCurrentEmployee(employee); 
+    setEditModalOpen(true);
   };
+
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error: {error?.message}</div>;
@@ -78,7 +84,11 @@ const EmployeeControlTable = () => {
             <TableBody>
               {employees?.map((employee) => (
                 <TableRow key={employee._id}>
-                  <TableCell align="left">{employee.name}</TableCell>
+                  <TableCell align="left">
+                    <Link to={`/employee/${employee._id}`} state={{ employee }} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    {employee.name}
+                    </Link>
+                  </TableCell>
                   <TableCell align="left">{employee.email}</TableCell>
                   <TableCell align="left">{employee.address}</TableCell>
                   <TableCell align="left">{employee.salary}</TableCell> 

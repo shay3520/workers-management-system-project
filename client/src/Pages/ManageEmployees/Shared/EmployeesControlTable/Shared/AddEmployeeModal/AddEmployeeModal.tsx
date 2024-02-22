@@ -5,7 +5,7 @@ import { AddEmployeeModalProps, FormData  } from './type';
 import { SelectChangeEvent } from '@mui/material/Select';
 
 
-const style = {
+const BoxStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
@@ -55,7 +55,7 @@ const AddEmployeeModal: React.FC<AddEmployeeModalProps> = ({ open, handleClose, 
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box sx={style} component="form" onSubmit={handleSubmit} noValidate>
+      <Box sx={BoxStyle} component="form" onSubmit={handleSubmit} noValidate>
         <Typography id="modal-modal-title" variant="h6" component="h2" textAlign="center" mb={2}>
           Add New Employee
         </Typography>
